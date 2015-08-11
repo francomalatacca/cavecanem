@@ -1,7 +1,7 @@
 /**
  * caveCanem a basic authorization http library
  * Copyright(c) 2015 Franco Malatacca
- * GPL v2 Licensed
+ * MIT Licensed
  */
 
 'use strict';
@@ -62,19 +62,10 @@ var checkAuthorization = function(user, resource, acl, fn) {
 };
 
 /**
- * @param req - Basic Authentication: req.cc is the basic object for the configuration of authorization process.
- *    Authentication process
- *    - req.cc.checkCredentials
- *      this function need to be defined in order to check the credentials
- *      @param credentials - an object with username and password fields
- *      @returns - a boolean value: true/false.
- *
- *    Authorization process (optional, if the req.cc.acl object is configured):
- *    - req.cc.acl.config: access control list object with user/resource/access level configuration
- *    - req.cc.acl.fn: access control list function returns true/false based on the user, resource, config parameters
- * @param res - res object with req.cc.credentials if the user is enabled to access the resource.
- * @param next - callback function to route for the protected resource
- * @returns - 401 if the authentication fails.
+ * @param req
+ * @param res
+ * @param next
+ * @returns {*}
  */
 var authentication = function (req, res, next){
   var authorizationString = req.header('authorization');
