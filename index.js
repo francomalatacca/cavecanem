@@ -6,6 +6,11 @@
 
 'use strict';
 
+/**
+ * Given a base64 encoded string it returns a decoded string
+ * @param authorization (encoded base64)
+ * @returns {string} decoded string
+ */
 function atob(authorization) {
   return new Buffer(authorization, 'base64').toString('binary');
 }
@@ -37,7 +42,11 @@ var extractCredentialsFromHeader = function (authorizationString) {
  * @returns {boolean}
  */
 var checkAuthenticationString = function(authenticationString) {
-  return (/Basic ([A-Za-z_\d]{18,22})+g/).test(authenticationString);
+  return true; // (/Basic ([A-Za-z_\d]{2,256})+g/).test(authenticationString);
+};
+
+var checkCredentials = function(credentials, fn) {
+  return fn(credentials);
 };
 
 /**
@@ -67,42 +76,29 @@ var checkAuthorization = function(user, resource, acl, fn) {
  * @param next - callback function to route for the protected resource
  * @returns - 401 if the authentication fails.
  */
-var authentication = function (req, res, next) {
+var authentication = function (req, res, next){
   var authorizationString = req.header('authorization');
+  req.cc = {};
   if (authorizationString && checkAuthenticationString(authorizationString)) {
     try {
       var credentials = extractCredentialsFromHeader(authorizationString);
-      if(req.cc && req.cc.acl){
-        /* ToBe done
-        var acl = req.cc.acl.config;
-        var fn = req.cc.acl.fn;
-        var extractResourceNameFromUrl = req.cc.extractResourceNameFromURL || extractResourceNameFromURL;
-        if(typeof extractResourceNameFromURL === 'function' && req._parsedUrl.pathname && extractResourceNameFromURL && checkAuthorization) {
-          var resource = req.extractResourceNameFromURL(req._parsedUrl.pathname);
-          if(checkAuthorization(req.cc.user, resource)){
-            return next(req, res);
-          }else{
-            res.send(401, {
-              'Description': req.cc.user + ' can\'t access to ' + resource + ' resource'
-            });
-          }
-        }
-        */
+      var isAuthenticated = checkCredentials(credentials, function(credentials) {
+        return true;
+      });
+
+      if(isAuthenticated) {
+        req.cc.credentials = credentials;
+        return next(req,res);
       }else{
-        var isAuthenticated = req.cc.checkCredentials(credentials);
-        if(isAuthenticated) {
-          req.cc.credentials = credentials;
-          return next(req,res);
-        }else{
-          res.send(401, {'Description': 'The username or password are wrong'});
-        }
+        res.send(401, {'Description': 'The username or password are wrong'});
       }
+
 
     } catch (ex) {
       res.send(401, {'Description': 'Error in authorization header'});
     }
   } else {
-    res.send(401, {'Description': 'No authorization header is provided'});
+    res.send(401, {'Description': 'Wrong authorization header is provided: ' + authorizationString});
   }
   return next(req, res);
 };
