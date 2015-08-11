@@ -78,7 +78,7 @@ var authentication = function (req, res, next){
 
       if(isAuthenticated) {
         req.cc.credentials = credentials;
-        return next(req,res);
+        next();
       }else {
         res.send(401, {'Description': 'The username or password are wrong'});
       }
@@ -88,7 +88,6 @@ var authentication = function (req, res, next){
   } else {
     res.send(401, {'Description': 'Wrong authorization header is provided: ' + authorizationString});
   }
-  return next(req, res);
 };
 
 /**
