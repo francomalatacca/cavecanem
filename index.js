@@ -78,13 +78,12 @@ var checkAuthorization = function(user, resource, acl, fn) {
  */
 var authentication = function (req, res, next){
   var authorizationString = req.header('authorization');
-  req.cc = {};
+  req.cc = req.cc || {};
+
   if (authorizationString && checkAuthorizationString(authorizationString)) {
     try {
       var credentials = extractCredentialsFromHeader(authorizationString);
-      var isAuthenticated = checkCredentials(credentials, function(credentials) {
-        return true;
-      });
+      var isAuthenticated = checkCredentials(credentials, req.cc.checkCredentials);
 
       if(isAuthenticated) {
         req.cc.credentials = credentials;
