@@ -38,11 +38,11 @@ var extractCredentialsFromHeader = function (authorizationString) {
 
 /**
  *
- * @param authenticationString
+ * @param authorizationString
  * @returns {boolean}
  */
-var checkAuthenticationString = function(authenticationString) {
-  return true; // (/Basic ([A-Za-z_\d]{2,256})+g/).test(authenticationString);
+var checkAuthorizationString = function(authorizationString) {
+  return (/[Basic ][A-Za-z_=]{4,256}/).test(authorizationString);
 };
 
 var checkCredentials = function(credentials, fn) {
@@ -79,7 +79,7 @@ var checkAuthorization = function(user, resource, acl, fn) {
 var authentication = function (req, res, next){
   var authorizationString = req.header('authorization');
   req.cc = {};
-  if (authorizationString && checkAuthenticationString(authorizationString)) {
+  if (authorizationString && checkAuthorizationString(authorizationString)) {
     try {
       var credentials = extractCredentialsFromHeader(authorizationString);
       var isAuthenticated = checkCredentials(credentials, function(credentials) {
@@ -89,11 +89,9 @@ var authentication = function (req, res, next){
       if(isAuthenticated) {
         req.cc.credentials = credentials;
         return next(req,res);
-      }else{
+      }else {
         res.send(401, {'Description': 'The username or password are wrong'});
       }
-
-
     } catch (ex) {
       res.send(401, {'Description': 'Error in authorization header'});
     }

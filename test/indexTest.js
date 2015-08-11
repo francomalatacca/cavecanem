@@ -23,7 +23,6 @@ describe('authentication', function() {
       done();
     });
   });
-
   it('checks the authorization string failing', function (done) {
     var req = {
       header: function (name) {
