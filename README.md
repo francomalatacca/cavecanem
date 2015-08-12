@@ -1,5 +1,5 @@
 # CaveCanem
-> [Beware the dog!](https://en.wiktionary.org/wiki/cave_canem) A Node.JS HTTP BA
+> [Beware the dog!](https://en.wiktionary.org/wiki/cave_canem) A Node.JS HTTP _Basic Authentication_ library
 
 [![Build Status](https://travis-ci.org/francomalatacca/cavecanem.svg?branch=master)](https://travis-ci.org/francomalatacca/cavecanem)
 
