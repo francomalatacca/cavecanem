@@ -1,8 +1,7 @@
-# cavecanem
+# CaveCanem
 > [Beware the dog!](https://en.wiktionary.org/wiki/cave_canem) A Node.JS HTTP BA
 
 [![Build Status](https://travis-ci.org/francomalatacca/cavecanem.svg?branch=master)](https://travis-ci.org/francomalatacca/cavecanem)
-[![npm version](https://badge.fury.io/js/cavecanem.svg)](http://badge.fury.io/js/cavecanem)
 
 ## HTTP Basic authentication (BA)
 
@@ -12,13 +11,13 @@ session identifier and login pages. Rather, HTTP Basic authentication uses stati
 standard fields in the HTTP header which means that no handshakes have to be done in anticipation.
 [Wikipedia](https://en.wikipedia.org/wiki/Basic_access_authentication)
 
-## cavecanem Installation
+## CaveCanem Installation
 
 ```js
 $ npm install cavecanem
 ```
 
-##Getting started
+## Getting started
 
 ### Example with Express.js
 
@@ -27,7 +26,7 @@ var auth = require('cavecanem')
 ```
 
 _cavecanem_ includes a configuration object `cc` passed through the _req_ object.
-The `cc` can specify a function named `checkCredentials` where it can be tested the decoded credentials
+The `cc` can specify a function named `checkCredentials` for testing the credentials
 against hardcoded values in the simplest case or stored in a database.
 
 The way to intercept the _req_ object and to add the `cc` object can be done in different way but 
@@ -68,6 +67,5 @@ an object with `username` and `password` is returned in a successful scenario.
 ## License
 
 [MIT License](http://opensource.org/licenses/MIT)
-[npm-url](https://npmjs.org/package/cavecanem)
-
+[npm-url]: https://npmjs.org/package/cavecanem
 
