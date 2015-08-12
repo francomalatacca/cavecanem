@@ -2,6 +2,7 @@
 > [Beware the dog!](https://en.wiktionary.org/wiki/cave_canem) A Node.JS HTTP BA
 
 [![Build Status](https://travis-ci.org/francomalatacca/cavecanem.svg?branch=master)](https://travis-ci.org/francomalatacca/cavecanem)
+[![npm version](https://badge.fury.io/js/cavecanem.svg)](http://badge.fury.io/js/cavecanem)
 
 ## HTTP Basic authentication (BA)
 
@@ -68,5 +69,5 @@ an object with `username` and `password` is returned in a successful scenario.
 
 [MIT License](http://opensource.org/licenses/MIT)
 [npm-url](https://npmjs.org/package/cavecanem)
-[![npm version](https://badge.fury.io/js/cavecanem.svg)](http://badge.fury.io/js/cavecanem)
+
 
