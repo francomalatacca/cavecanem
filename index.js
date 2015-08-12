@@ -49,10 +49,6 @@ var checkCredentials = function(credentials, fn) {
   return fn(credentials);
 };
 
-var extractResourceName = function(resourceURI, resourceTemplate) {
-  return fn(resourceURI);
-};
-
 /**
  *
  * @param user
