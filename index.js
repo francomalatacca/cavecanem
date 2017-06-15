@@ -33,7 +33,7 @@ var extractCredentialsFromHeader = function (authorizationString) {
   } else {
     throw new Error("Bad authentication format");
   }
-  return {username: username, password: password};
+  return { code: 200, 'description': 'successfully authenticated', username: username, password: password };
 };
 
 /**
@@ -41,11 +41,11 @@ var extractCredentialsFromHeader = function (authorizationString) {
  * @param authorizationString
  * @returns {boolean}
  */
-var checkAuthorizationString = function(authorizationString) {
+var checkAuthorizationString = function (authorizationString) {
   return (/[Basic ][A-Za-z_=]{4,256}/).test(authorizationString);
 };
 
-var checkCredentials = function(credentials, fn) {
+var checkCredentials = function (credentials, fn) {
   return fn(credentials);
 };
 
@@ -57,7 +57,7 @@ var checkCredentials = function(credentials, fn) {
  * @param fn
  * @returns {*}
  */
-var checkAuthorization = function(user, resource, acl, fn) {
+var checkAuthorization = function (user, resource, acl, fn) {
   return fn(user, resource, acl);
 };
 
@@ -67,26 +67,29 @@ var checkAuthorization = function(user, resource, acl, fn) {
  * @param next
  * @returns {*}
  */
-var authentication = function (req, res, next){
+var authentication = function (req, res, next) {
   var authorizationString = req.header('authorization');
-  req.cc = req.cc || {};
+  req.authentication = req.authentication || {};
 
   if (authorizationString && checkAuthorizationString(authorizationString)) {
     try {
       var credentials = extractCredentialsFromHeader(authorizationString);
-      var isAuthenticated = checkCredentials(credentials, req.cc.checkCredentials);
+      var isAuthenticated = checkCredentials(credentials, req.authentication.checkCredentials);
 
-      if(isAuthenticated) {
-        req.cc.credentials = credentials;
-        next();
-      }else {
-        res.send(401, {'Description': 'The username or password are wrong'});
+      if (isAuthenticated) {
+        req.authentication = credentials;
+        next(req, res);
+      } else {
+        res.authentication = { 'code': 401, 'description': 'The username or password are wrong' };
+        next(req, res);
       }
     } catch (ex) {
-      res.send(401, {'Description': 'Error in authorization header'});
+      res.authentication = { 'code': 500, 'description': ex };
+      next(req, res);
     }
   } else {
-    res.send(401, {'Description': 'Wrong authorization header is provided: ' + authorizationString});
+    res.authentication = { 'code': 400, 'description': 'wrong authorization header is provided: ' + authorizationString };
+    next(req, res);
   }
 };
 
