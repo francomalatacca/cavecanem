@@ -34,7 +34,7 @@ the following is a good and simple approach:
 
 ```js
 app.use(function (req, res, next) {
-  req.cc = {
+  req.authentication = {
     checkCredentials: function(credentials){
       return (credentials.username === "canem" && credentials.password === "cave");
     }
@@ -43,12 +43,24 @@ app.use(function (req, res, next) {
 });
 ```
 
-*cavecanem* variable is called _auth_ when we requested it via _require_ so we can add it 
-as middleware before the routing for the _protected_resource_
+you can use the `auth` variable as a middleware for the routing of yours _protected resource_
 
 ```js
-app.use('/users',auth, protected_resource);
+app.use('/users', auth, protected_resource);
 ```
+
+the function called by the route will receive the `res` object which will include `authentication` object with a code, a description and in case username and password.
+
+|code|description|username|password|
+|---|---|---|---|
+|200|successfully authenticated|yes|yes|
+|401|The username or password are wrong|no|no|
+|400|Wrong authorization header is provided|no|no|
+|500|Description of the error|no|no|
+
+The end function needs to use this information to send back the correct status to the client.
+
+
 #### Test with cURL
 
 A simple way to test the the request to a _protected_resource_
