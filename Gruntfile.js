@@ -28,21 +28,21 @@ module.exports = function(grunt) {
             }
         },
         uglify: {
-          scripts: {
-            expand: true,
-            cwd: './',
-            src: '**.js',
-            dest: 'build/',
-            ext: '.min.js'
-          }
+            scripts: {
+                expand: true,
+                cwd: './',
+                src: '**.js',
+                dest: 'build/',
+                ext: '.min.js'
+            }
         }
     });
     grunt.loadNpmTasks("grunt-contrib-watch");
     grunt.loadNpmTasks("grunt-contrib-jshint");
-  grunt.loadNpmTasks("grunt-mocha-cli");
+    grunt.loadNpmTasks("grunt-mocha-cli");
 
-  grunt.loadNpmTasks("grunt-contrib-uglify");
+    grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.registerTask("test", ["jshint", "mochacli"]);
-    grunt.registerTask("build",["jshint", "uglify"]);
+    grunt.registerTask("build", ["jshint", "uglify"]);
     grunt.registerTask("default", ["test"]);
 };

@@ -1,7 +1,10 @@
 language: node_js
 node_js:
-  - "0.12"
+- '0.12'
 sudo: required
 before_install: npm install -g grunt-cli
 install: npm install
 before_script: grunt build
+deploy:
+  api_key:
+    secure: ha+W3Lunt6McBCr9aaIXzrhc5CPoRhalQhaQ+ZlzLy/j4lHw4JEftLY/SVY5/Y6jIHShoEp6jbWs3E11Yaf7OQTcog/t/yJqaPOA6m/MMFbHJC5YHNlFnlHUW0RDRSntrDEJohedltSe/jBxQsb8T4TNgCvkx+VK6qZx69OyVxvKolFYL8zMDLk5sUz9tlofiSM3GxQj78C2WDp6zYVHAExQdBihdLXEOV0IFKRJB5eHQROaZxCuyeq8yYszngT1W0aUWAQ3rBKT1v8Np3nqmPwXDGa0uSCLAeDyeio2AKZRfcV01UO6zZAacFOKt+/rJUwcEryop/tn1BKS/uyDwo8oLiodS+7ReqcmezbQfQWVjj8jSQPpVd2HOF5q8XmtuMN/FfR7dKEYInFHUrFQDAcNTeeVFM43KsPL3CGSUi01pJ9Ml3D0j8zbvYEMQKjQQO/BQWJUpLMPnYbAzJ+igpvQyVav4+8HIaPZ2OesqN4Fcx0t8RvHDm+dE+hOU9yfLmTUl2volmi+s0nyBK4BDdfd+sNmJ151sL+fJ+7WGUMvm2EU4B8TF3pfWqCvd3Eq+gtcv0gsNxGK7wizl35PS2JYA7ROxohe2INioOk28XrpRCuLy6rlV68pv8utm9+68ne9wqflmaf2og3KXW6SYLBrf2flHg4XEGVyrHjXHCQ=
