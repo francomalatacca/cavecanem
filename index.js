@@ -12,7 +12,7 @@
  * @returns {string} decoded string
  */
 function atob(authorization) {
-  return new Buffer(authorization, 'base64').toString('binary');
+    return new Buffer(authorization, 'base64').toString('binary');
 }
 
 /**
@@ -21,19 +21,19 @@ function atob(authorization) {
  * @param authorizationString
  * @returns {{username: *, password: *}}
  */
-var extractCredentialsFromHeader = function (authorizationString) {
-  var authorization = authorizationString.split(' ');
-  var username = null;
-  var password = null;
-  if (authorization.length > 0) {
-    authorization = authorizationString.split(' ')[1];
-    authorization = atob(authorization);
-    username = authorization.split(':')[0];
-    password = authorization.split(':')[1];
-  } else {
-    throw new Error("Bad authentication format");
-  }
-  return { code: 200, 'description': 'successfully authenticated', username: username, password: password };
+var extractCredentialsFromHeader = function(authorizationString) {
+    var authorization = authorizationString.split(' ');
+    var username = null;
+    var password = null;
+    if (authorization.length > 0) {
+        authorization = authorizationString.split(' ')[1];
+        authorization = atob(authorization);
+        username = authorization.split(':')[0];
+        password = authorization.split(':')[1];
+    } else {
+        throw new Error("Bad authentication format");
+    }
+    return { code: 200, 'description': 'successfully authenticated', username: username, password: password };
 };
 
 /**
@@ -41,12 +41,12 @@ var extractCredentialsFromHeader = function (authorizationString) {
  * @param authorizationString
  * @returns {boolean}
  */
-var checkAuthorizationString = function (authorizationString) {
-  return (/[Basic ][A-Za-z_=]{4,256}/).test(authorizationString);
+var checkAuthorizationString = function(authorizationString) {
+    return (/[Basic ][A-Za-z_=]{4,256}/).test(authorizationString);
 };
 
-var checkCredentials = function (credentials, fn) {
-  return fn(credentials);
+var checkCredentials = function(credentials, fn) {
+    return fn(credentials);
 };
 
 /**
@@ -57,8 +57,8 @@ var checkCredentials = function (credentials, fn) {
  * @param fn
  * @returns {*}
  */
-var checkAuthorization = function (user, resource, acl, fn) {
-  return fn(user, resource, acl);
+var checkAuthorization = function(user, resource, acl, fn) {
+    return fn(user, resource, acl);
 };
 
 /**
@@ -67,30 +67,30 @@ var checkAuthorization = function (user, resource, acl, fn) {
  * @param next
  * @returns {*}
  */
-var authentication = function (req, res, next) {
-  var authorizationString = req.header('authorization');
-  req.authentication = req.authentication || {};
+var authentication = function(req, res, next) {
+    var authorizationString = req.header('authorization');
+    req.authentication = req.authentication || {};
 
-  if (authorizationString && checkAuthorizationString(authorizationString)) {
-    try {
-      var credentials = extractCredentialsFromHeader(authorizationString);
-      var isAuthenticated = checkCredentials(credentials, req.authentication.checkCredentials);
+    if (authorizationString && checkAuthorizationString(authorizationString)) {
+        try {
+            var credentials = extractCredentialsFromHeader(authorizationString);
+            var isAuthenticated = checkCredentials(credentials, req.authentication.checkCredentials);
 
-      if (isAuthenticated) {
-        req.authentication = credentials;
-        next(req, res);
-      } else {
-        res.authentication = { 'code': 401, 'description': 'The username or password are wrong' };
-        next(req, res);
-      }
-    } catch (ex) {
-      res.authentication = { 'code': 500, 'description': ex };
-      next(req, res);
+            if (isAuthenticated) {
+                req.authentication = credentials;
+                next();
+            } else {
+                req.authentication = { 'code': 401, 'description': 'The username or password are wrong' };
+                next();
+            }
+        } catch (ex) {
+            req.authentication = { 'code': 500, 'description': ex };
+            next();
+        }
+    } else {
+        req.authentication = { 'code': 400, 'description': 'wrong authorization header is provided: ' + authorizationString };
+        next();
     }
-  } else {
-    res.authentication = { 'code': 400, 'description': 'wrong authorization header is provided: ' + authorizationString };
-    next(req, res);
-  }
 };
 
 /**
@@ -100,10 +100,10 @@ var authentication = function (req, res, next) {
  * (http|https)://domain/resource/(:id)
  * @private
  */
-var extractResourceNameFromURL = function (url) {
-  var pathBreakdown = url.split('/');
-  var resourceName = pathBreakdown[pathBreakdown.length - 1];
-  return resourceName;
+var extractResourceNameFromURL = function(url) {
+    var pathBreakdown = url.split('/');
+    var resourceName = pathBreakdown[pathBreakdown.length - 1];
+    return resourceName;
 };
 
 /**
